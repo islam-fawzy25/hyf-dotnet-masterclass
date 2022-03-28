@@ -1,69 +1,42 @@
-﻿// 3. Adding time
-
-// We need to add method AddHours which accepts a number which returns a new time object with the added hours. Let's look at an example:
-
+﻿//3. Adding time
 var time = new JupiterTime(2, 20);
-var timeIn1Hour = time.AddHours(1);
-//  var timeIn13Hour = time.AddHours(13);
-// var timeInminus = time.AddHours(-4);
+var timeIn1Hour = time.AddHours(-13);
 
-
-PrintTime(timeIn1Hour);// Output print 3:20.
-//  PrintTime(timeIn13Hour);// Output print 3:20.
-// PrintTime(timeInminus);// Time is 08:20
-
-
-// The code should print 3:20.
-
-//     Bonus: What happens if we add a large number like 11? Bonus: What happens if we add a negative number? How do we go back? What is before 0:00 for example?
-
-
-
+PrintTime(timeIn1Hour);// Output Time is 09:20
 static void PrintTime(JupiterTime inputTime)
 {
-
     Console.WriteLine($"Time is {inputTime.Hours.ToString("00.##")}:{inputTime.Minutes.ToString("00.##")}");
 }
 class JupiterTime
 {
-    int _hours, _minutes;
-    public JupiterTime(int hours, int minutes)
+    public JupiterTime(int hour, int minutes)
     {
-        Hours = hours;
         Minutes = minutes;
+        Hours = hour;
 
-    }
-
-    public int Hours
-    {
-        get => _hours; set
+        if (minutes > 59)
         {
-            if (value > 9) _hours = value % 10;
-            else if (value < 0) _hours = 10 + value;
-            else _hours = value;
-
+            Hours += minutes / 60;
+            Minutes = minutes % 60;
         }
+        if (Hours > 9) Hours = Hours % 10;
     }
-    public int Minutes
-    {
-        get => _minutes; set
-        {
-            if (value > 59)
-            {
-                _hours += value / 60;
-                _minutes = value % 60;
-            }
-            else if (value < 0) System.Console.WriteLine(value);
-            else _minutes = value;
-
-        }
-    }
-
+    public int Hours { get; set; }
+    public int Minutes { get; set; }
     public JupiterTime AddHours(int inputHours)
     {
-        // if (inputHours < 0) Hours -= inputHours;
-        // else
-        Hours += inputHours;
+        if (inputHours > 9)
+        {
+            inputHours = inputHours % 10;
+            Hours += inputHours;
+        }
+        if (inputHours < 0)
+        {
+            inputHours = inputHours % 10;
+            Hours += inputHours;
+              if(Hours<0)Hours = 10 + Hours;
+        }
         return this;
     }
 }
+
